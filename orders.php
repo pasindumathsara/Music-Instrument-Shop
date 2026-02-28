@@ -35,11 +35,11 @@ if ($viewId > 0) {
     require_once 'includes/header.php';
 ?>
 <div class="container section">
-  <nav style="font-size:.8rem;color:var(--muted);margin-bottom:24px;">
+  <nav class="breadcrumb">
     <a href="<?php echo BASE_URL; ?>/orders.php">My Orders</a> &rsaquo;
-    <span>Order #<?php echo $viewId; ?></span>
+    <span class="active">Order #<?php echo $viewId; ?></span>
   </nav>
-  <div style="display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start;">
+  <div class="order-detail-layout">
     <div class="card">
       <div class="card-header">
         <span class="card-title">Order #<?php echo $viewId; ?></span>
@@ -61,8 +61,8 @@ if ($viewId > 0) {
                              && !empty($it['digital_file'])
                              && in_array($order['status'], ['paid','processing','shipped','delivered']);
           ?>
-          <div style="display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--border);">
-            <div style="width:56px;height:56px;background:<?php echo $itDigital ? '#ede9fe' : 'var(--bg)'; ?>;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;opacity:.7;flex-shrink:0;">
+          <div class="order-item-detail">
+            <div class="item-icon <?php echo $itDigital ? 'digital' : ''; ?>">
               <?php echo $itDigital ? '&#9660;' : '&#127925;'; ?>
             </div>
             <div style="flex:1;">

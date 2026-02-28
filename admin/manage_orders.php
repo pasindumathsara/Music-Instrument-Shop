@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
-requireAdmin();
+requireManagement();
 
 $pageTitle   = "Manage Orders";
 $statusFilter = $_GET['status'] ?? '';

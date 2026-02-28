@@ -8,7 +8,7 @@ if (empty($cart)) { header("Location: " . BASE_URL . "/cart.php"); exit(); }
 
 $subtotal  = getCartSubtotal();
 $allDigital = isCartAllDigital($conn);   // no shipping for pure-digital orders
-$shipping  = $allDigital ? 0.00 : calculateShipping($subtotal);
+$shipping  = $allDigital ? 0.00 : calculateShipping($subtotal, $conn);
 $total     = $subtotal + $shipping;
 
 
@@ -31,6 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$allDigital && (!$name || !$address || !$city || !$zip)) {
         $error = "Please fill in all shipping fields.";
     } else {
+        // RE-CALCULATE SHIPPING (Ensure it's fresh from DB before storage)
+        $shipping = $allDigital ? 0.00 : calculateShipping($subtotal, $conn);
+        $total    = $subtotal + $shipping;
+
         $conn->begin_transaction();
         try {
             $userId  = (int)$_SESSION['user_id'];

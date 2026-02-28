@@ -83,55 +83,21 @@ $pageTitle = "Track Order #$orderId";
 require_once 'includes/header.php';
 ?>
 
-<style>
-/* ── Tracking Timeline ── */
-.track-wrap { max-width:860px; margin:0 auto; }
-.track-timeline { display:flex; justify-content:space-between; position:relative; margin:40px 0 48px; }
-.track-timeline::before {
-  content:''; position:absolute; top:28px; left:5%; right:5%;
-  height:4px; background:var(--border); border-radius:2px; z-index:0;
-}
-.track-progress {
-  position:absolute; top:28px; left:5%; height:4px;
-  background:linear-gradient(90deg,var(--success),var(--accent));
-  border-radius:2px; z-index:1; transition:width .6s ease;
-}
-.track-step { display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; position:relative; z-index:2; }
-.track-icon {
-  width:56px; height:56px; border-radius:50%; border:3px solid var(--border);
-  display:flex; align-items:center; justify-content:center; font-size:1.4rem;
-  background:#fff; transition:all .3s; color:#94a3b8;
-}
-.track-icon.done   { border-color:var(--success); background:var(--success-bg); color:var(--success); }
-.track-icon.active { border-color:var(--accent);  background:var(--accent);     color:#fff; box-shadow:0 0 0 4px rgba(225,29,72,.2); }
-.track-icon.cancel { border-color:var(--danger);  background:var(--danger-bg);  color:var(--danger); }
-.track-label { font-size:.72rem; font-weight:600; text-align:center; color:var(--muted); }
-.track-label.done   { color:var(--success); }
-.track-label.active { color:var(--accent); }
-.track-label.cancel { color:var(--danger); }
-.track-date { font-size:.65rem; color:var(--muted); text-align:center; }
-
-/* cancelled ribbon */
-.cancelled-ribbon {
-  background:var(--danger-bg);border:1.5px solid var(--danger);border-radius:10px;
-  padding:14px 20px;font-size:.88rem;color:#991b1b;font-weight:600;margin-bottom:28px;
-}
-</style>
 
 <div class="container section">
   <div class="track-wrap">
 
     <!-- Header -->
-    <nav style="font-size:.8rem;color:var(--muted);margin-bottom:24px;">
+    <nav class="breadcrumb">
       <a href="<?php echo BASE_URL; ?>/orders.php">My Orders</a> &rsaquo;
       <a href="<?php echo BASE_URL; ?>/orders.php?id=<?php echo $orderId; ?>">Order #<?php echo $orderId; ?></a> &rsaquo;
-      <span>Track</span>
+      <span class="active">Track</span>
     </nav>
 
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
-      <div>
-        <h1 style="font-size:1.6rem;font-weight:800;margin-bottom:4px;">Order #<?php echo $orderId; ?> Tracking</h1>
-        <div style="font-size:.83rem;color:var(--muted);">
+    <div class="track-header">
+      <div class="track-title-info">
+        <h1 class="track-title">Order #<?php echo $orderId; ?> Tracking</h1>
+        <div class="track-subtitle">
           Placed <?php echo formatDate($order['created_at']); ?> &nbsp;·&nbsp;
           <?php echo pmLabel($order['payment_method'] ?? 'card'); ?>
         </div>
@@ -172,13 +138,13 @@ require_once 'includes/header.php';
     </div>
 
     <!-- Main Grid -->
-    <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
+    <div class="order-detail-layout">
 
       <!-- Left: Items + History -->
       <div>
 
         <!-- Order Items -->
-        <div class="card" style="margin-bottom:20px;">
+        <div class="card mb-4">
           <div class="card-header"><span class="card-title">Order Items</span></div>
           <div class="card-body" style="padding:0;">
             <?php foreach ($items as $it): ?>

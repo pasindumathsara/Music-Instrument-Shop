@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_id']   = $newId;
                 $_SESSION['user_name'] = $name;
                 $_SESSION['user_role'] = 'customer';
-                setFlash('success', "Welcome to Melody Masters, $name! 🎵");
+                setFlash('success', "Welcome to Melody Masters, $name! ");
                 header("Location: " . BASE_URL . "/home.php"); exit();
             } else {
                 $error = "Registration failed. Please try again.";
@@ -63,51 +63,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Create Account – Melody Masters</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-  <style>
-    body { background:linear-gradient(135deg,#0f172a 0%,#1a0533 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-    .auth-card {
-      width:920px; max-width:100%; min-height:560px; background:#fff;
-      border-radius:24px; overflow:hidden; display:flex; box-shadow:0 30px 80px rgba(0,0,0,.5);
-    }
-    .auth-left {
-      width:40%; background:url('<?php echo BASE_URL; ?>/assets/images/bg2.jpg') center/cover no-repeat;
-      position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:36px;
-    }
-    .auth-left::after { content:''; position:absolute; inset:0; background:rgba(15,23,42,.65); }
-    .auth-left-content { position:relative; z-index:2; }
-    .auth-left h2 { color:#fff; font-size:1.4rem; font-weight:800; margin-bottom:8px; }
-    .auth-left p  { color:rgba(255,255,255,.75); font-size:.85rem; line-height:1.7; }
-    .auth-perks { position:relative; z-index:2; display:flex; flex-direction:column; gap:10px; }
-    .perk { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.85); font-size:.83rem; }
-    .perk span { font-size:1.2rem; }
-    .auth-right { flex:1; padding:44px; display:flex; flex-direction:column; justify-content:center; }
-    .auth-right h1 { font-size:1.7rem; font-weight:800; margin-bottom:4px; }
-    .auth-right .sub { color:var(--muted); font-size:.875rem; margin-bottom:24px; }
-    .pwd-strength { height:4px; border-radius:4px; margin-top:6px; transition:all .3s; background:#e2e8f0; }
-    @media(max-width:680px){
-      .auth-card { flex-direction:column; }
-      .auth-left { width:100%; min-height:160px; }
-      .auth-right { padding:28px 20px; }
-    }
-  </style>
 </head>
-<body>
+<body class="auth-page">
 
 <div class="auth-card">
   <!-- Left Panel -->
-  <div class="auth-left">
+  <div class="auth-left" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/bg2.jpg');">
     <div class="auth-left-content">
       <div style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:12px;">
-        🎵 Melody<span style="color:var(--accent);">Masters</span>
+         Melody<span style="color:var(--accent);">Masters</span>
       </div>
       <h2>Join the Community</h2>
       <p>Thousands of musicians trust Melody Masters for their gear.</p>
     </div>
     <div class="auth-perks">
-      <div class="perk"><span>🎸</span> Browse 100+ instruments</div>
-      <div class="perk"><span>🚚</span> Free shipping over $100</div>
-      <div class="perk"><span>⭐</span> Leave reviews after purchase</div>
-      <div class="perk"><span>📦</span> Track all your orders</div>
+      <div class="perk"><span>✓</span> Browse 100+ instruments</div>
+      <div class="perk"><span>✓</span> Free shipping over £100</div>
+      <div class="perk"><span>✓</span> Leave reviews after purchase</div>
+      <div class="perk"><span>✓</span> Track all your orders</div>
     </div>
   </div>
 
@@ -157,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:4px;">
-        Create My Account →
+        Create My Account
       </button>
     </form>
 

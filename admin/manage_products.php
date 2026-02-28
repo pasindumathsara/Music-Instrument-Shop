@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
-requireAdmin();
+requireManagement();
 
 $pageTitle = "Manage Products";
 $action    = $_GET['action'] ?? 'list';
@@ -30,9 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $catId    = (int)($_POST['category_id'] ?? 0);
     $desc     = trim($_POST['description'] ?? '');
     $price    = (float)($_POST['price']    ?? 0);
+    $shipping = (float)($_POST['shipping_cost'] ?? 0);
     $stock    = (int)($_POST['stock']      ?? 0);
     $pid      = (int)($_POST['product_id'] ?? 0);
     $ptype    = ($_POST['product_type'] ?? 'physical') === 'digital' ? 'digital' : 'physical';
+    if ($ptype === 'digital') $shipping = 0;
 
     if (!$name || $price <= 0) {
         $error = "Name and a valid price are required.";
@@ -82,17 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$error) {
             if ($pid > 0) {
                 $upd = $conn->prepare(
-                    "UPDATE products SET category_id=?,name=?,description=?,price=?,stock=?,image=?,product_type=?,digital_file=? WHERE id=?"
+                    "UPDATE products SET category_id=?,name=?,description=?,price=?,shipping_cost=?,stock=?,image=?,product_type=?,digital_file=? WHERE id=?"
                 );
-                $upd->bind_param("issdisssi", $catId, $name, $desc, $price, $stock, $imageName, $ptype, $digitalFile, $pid);
+                $upd->bind_param("issddisssi", $catId, $name, $desc, $price, $shipping, $stock, $imageName, $ptype, $digitalFile, $pid);
                 $upd->execute();
                 $savedPid = $pid;
                 setFlash('success', 'Product updated successfully!');
             } else {
                 $ins = $conn->prepare(
-                    "INSERT INTO products (category_id,name,description,price,stock,image,product_type,digital_file) VALUES (?,?,?,?,?,?,?,?)"
+                    "INSERT INTO products (category_id,name,description,price,shipping_cost,stock,image,product_type,digital_file) VALUES (?,?,?,?,?,?,?,?,?)"
                 );
-                $ins->bind_param("issdisss", $catId, $name, $desc, $price, $stock, $imageName, $ptype, $digitalFile);
+                $ins->bind_param("issddisss", $catId, $name, $desc, $price, $shipping, $stock, $imageName, $ptype, $digitalFile);
                 $ins->execute();
                 $savedPid = $conn->insert_id;
                 setFlash('success', 'Product added successfully!');
@@ -227,6 +229,12 @@ require_once 'includes/admin_header.php';
           <input type="number" name="price" class="form-control" step="0.01" min="0"
                  value="<?php echo $editProduct['price'] ?? ''; ?>" required>
         </div>
+        <div class="form-group" id="shippingField" style="<?php echo $isDigital ? 'display:none;' : ''; ?>">
+          <label class="form-label">Shipping Cost (£)</label>
+          <input type="number" name="shipping_cost" class="form-control" step="0.01" min="0"
+                 value="<?php echo $editProduct['shipping_cost'] ?? 0; ?>">
+          <small style="color:var(--muted);font-size:.7rem;">Per unit shipping fee</small>
+        </div>
         <div class="form-group" id="stockField">
           <label class="form-label">Stock Quantity</label>
           <input type="number" name="stock" class="form-control" min="0"
@@ -273,6 +281,7 @@ require_once 'includes/admin_header.php';
 <script>
 function toggleDigital(type) {
   document.getElementById('digitalField').style.display = type === 'digital' ? '' : 'none';
+  document.getElementById('shippingField').style.display = type === 'digital' ? 'none' : '';
 }
 </script>
 
@@ -286,7 +295,7 @@ function toggleDigital(type) {
       <thead>
         <tr>
           <th>ID</th><th>Image</th><th>Name</th><th>Category</th>
-          <th>Price</th><th>Stock</th><th>Actions</th>
+          <th>Price</th><th>Ship Fee</th><th>Stock</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -307,6 +316,7 @@ function toggleDigital(type) {
             </td>
             <td><?php echo sanitize($p['cat_name'] ?? '—'); ?></td>
             <td style="font-weight:700;color:var(--accent);"><?php echo formatPrice($p['price']); ?></td>
+            <td style="font-size:.8rem;color:var(--muted);"><?php echo $p['shipping_cost'] > 0 ? formatPrice($p['shipping_cost']) : 'FREE'; ?></td>
             <td>
               <?php if ($p['stock'] == 0): ?>
                 <span class="badge badge-cancelled">Out of Stock</span>

@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Redirect
             if ($redirect && strpos($redirect, BASE_URL) === 0) {
                 header("Location: $redirect");
-            } elseif ($user['role'] === 'admin') {
+            } elseif ($user['role'] === 'admin' || $user['role'] === 'staff') {
                 header("Location: " . BASE_URL . "/admin/dashboard.php");
             } else {
                 header("Location: " . BASE_URL . "/home.php");
@@ -53,41 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Login – Melody Masters</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-  <style>
-    body { background:linear-gradient(135deg,#0f172a 0%,#1a0533 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-    .auth-card {
-      width:900px; max-width:100%; min-height:520px; background:#fff;
-      border-radius:24px; overflow:hidden; display:flex; box-shadow:0 30px 80px rgba(0,0,0,.5);
-    }
-    .auth-left {
-      width:45%; background:url('<?php echo BASE_URL; ?>/assets/images/bg1.jpg') center/cover no-repeat;
-      position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:36px;
-    }
-    .auth-left::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,.55); }
-    .auth-left-content { position:relative; z-index:2; }
-    .auth-left h2 { color:#fff; font-size:1.5rem; font-weight:800; margin-bottom:8px; }
-    .auth-left p  { color:rgba(255,255,255,.75); font-size:.875rem; line-height:1.6; }
-    .auth-brand { position:relative; z-index:2; }
-    .auth-brand .logo { color:#fff; font-size:1.2rem; font-weight:800; }
-    .auth-brand .logo span { color:var(--accent); }
-    .auth-brand small { color:rgba(255,255,255,.6); font-size:.78rem; }
-    .auth-right { flex:1; padding:48px 44px; display:flex; flex-direction:column; justify-content:center; }
-    .auth-right h1 { font-size:1.8rem; font-weight:800; margin-bottom:4px; }
-    .auth-right .sub { color:var(--muted); font-size:.875rem; margin-bottom:28px; }
-    @media(max-width:680px) {
-      .auth-card { flex-direction:column; }
-      .auth-left  { width:100%; min-height:180px; }
-      .auth-right { padding:32px 24px; }
-    }
-  </style>
 </head>
-<body>
+<body class="auth-page">
 
 <div class="auth-card">
   <!-- Left Panel -->
-  <div class="auth-left">
+  <div class="auth-left" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/bg1.jpg');">
     <div class="auth-left-content">
-      <h2>Find Your Sound 🎵</h2>
+      <h2>Find Your Sound </h2>
       <p>Explore guitars, keyboards, drums, and more from the world's top instrument brands.</p>
     </div>
     <div class="auth-brand">
@@ -133,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;">
-        Sign In →
+        Sign In 
       </button>
     </form>
 

@@ -76,7 +76,7 @@ require_once 'includes/header.php';
 ?>
 
 <!-- Hero -->
-<div class="hero">
+<div class="hero home-hero" style="background-image: linear-gradient(rgba(15,23,42,0.7), rgba(15,23,42,0.7)), url('<?php echo BASE_URL; ?>/assets/images/banner.png');">
   <div class="hero-content">
     <h1>Find Your <span>Perfect Instrument</span></h1>
     <p>Explore our curated collection of premium musical instruments for every skill level.</p>

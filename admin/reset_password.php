@@ -8,7 +8,7 @@
  */
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
-requireAdmin();
+requireManagement();
 
 $pageTitle = "Password Reset Tool";
 $success = $error = '';
@@ -129,7 +129,12 @@ require_once 'includes/admin_header.php';
           ?>
             <tr>
               <td>
-                <span class="badge <?php echo $u['role']==='admin' ? 'badge-admin' : 'badge-customer'; ?>">
+                <?php
+                  $badgeCls = 'badge-customer';
+                  if ($u['role'] === 'admin') $badgeCls = 'badge-admin';
+                  if ($u['role'] === 'staff') $badgeCls = 'badge-staff';
+                ?>
+                <span class="badge <?php echo $badgeCls; ?>">
                   <?php echo ucfirst($u['role']); ?>
                 </span>
               </td>

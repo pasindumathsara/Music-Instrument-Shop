@@ -120,14 +120,14 @@ require_once 'includes/header.php';
 <div class="container section">
 
   <!-- Breadcrumb -->
-  <nav style="font-size:.8rem;color:var(--muted);margin-bottom:28px;">
+  <nav class="breadcrumb">
     <a href="<?php echo BASE_URL; ?>/home.php">Shop</a>
     <?php if ($p['cat_name']): ?>
       &rsaquo; <a href="<?php echo BASE_URL; ?>/home.php?cat=<?php echo $p['category_id']; ?>">
         <?php echo sanitize($p['cat_name']); ?>
       </a>
     <?php endif; ?>
-    &rsaquo; <span style="color:var(--text);"><?php echo sanitize($p['name']); ?></span>
+    &rsaquo; <span class="active"><?php echo sanitize($p['name']); ?></span>
   </nav>
 
   <!-- Product Detail -->
@@ -158,30 +158,30 @@ require_once 'includes/header.php';
       <?php $isDigital = ($p['product_type'] ?? 'physical') === 'digital'; ?>
       <div class="stock-row">
         <?php if ($isDigital): ?>
-          <span class="dot" style="background:#6d28d9;"></span>
-          <span style="color:#6d28d9;font-weight:600;">Digital Download – Always Available</span>
+          <span class="dot digital"></span>
+          <span class="status-text digital">Digital Download – Always Available</span>
         <?php elseif ((int)$p['stock'] > 10): ?>
           <span class="dot"></span> In Stock (<?php echo $p['stock']; ?> available)
         <?php elseif ((int)$p['stock'] > 0): ?>
           <span class="dot low"></span> Low Stock – only <?php echo $p['stock']; ?> left!
         <?php else: ?>
-          <span class="dot out"></span> <span style="color:var(--danger);font-weight:600;">Out of Stock</span>
+          <span class="dot out"></span> <span class="status-text out">Out of Stock</span>
         <?php endif; ?>
       </div>
 
       <!-- Add to Cart / Buy -->
       <?php if ($isDigital || (int)$p['stock'] > 0): ?>
-        <form method="POST" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <form method="POST" class="add-cart-form">
           <input type="hidden" name="add_cart" value="1">
           <?php if (!$isDigital): ?>
-          <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;">
+          <div class="qty-selector">
             <button type="button" class="qty-btn" onclick="adjQty(-1)">−</button>
             <input id="qtyInput" type="number" name="qty" value="1" min="1"
-                   max="<?php echo $p['stock']; ?>" class="qty-in" style="width:54px;">
+                   max="<?php echo $p['stock']; ?>" class="qty-in">
             <button type="button" class="qty-btn" onclick="adjQty(1)">+</button>
           </div>
           <?php endif; ?>
-          <button type="submit" class="btn btn-primary btn-lg"
+          <button type="submit" class="btn btn-primary btn-lg btn-buy"
             <?php if (!isLoggedIn()): ?>
             onclick="event.preventDefault();
               window.location='<?php echo BASE_URL; ?>/login.php?redirect=<?php echo urlencode(BASE_URL . '/product.php?id=' . $id); ?>';"

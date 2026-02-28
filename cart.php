@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $qty = max(1, (int)($_POST['qty'] ?? 1));
 
         // Fetch product — no stock>0 filter so digital products (stock=0/unlimited) are allowed
-        $stmt = $conn->prepare("SELECT id,name,price,stock,image,product_type FROM products WHERE id=?");
+        $stmt = $conn->prepare("SELECT id,name,price,shipping_cost,stock,image,product_type FROM products WHERE id=?");
         $stmt->bind_param("i", $pid);
         $stmt->execute();
         $prod = $stmt->get_result()->fetch_assoc();
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'image'        => $prod['image'],
                     'quantity'     => $newQty,
                     'product_type' => $prod['product_type'],
+                    'shipping_cost' => $prod['shipping_cost'],
                 ];
                 setFlash('success', '"' . $prod['name'] . '" added to cart!');
             }
@@ -99,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $pageTitle = "Shopping Cart";
 $cart      = $_SESSION['cart'] ?? [];
 $subtotal  = getCartSubtotal();
-$shipping  = calculateShipping($subtotal);
+$shipping  = calculateShipping($subtotal, $conn);
 $total     = $subtotal + $shipping;
 
 require_once 'includes/header.php';

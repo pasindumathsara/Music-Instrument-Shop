@@ -13,6 +13,10 @@ function isAdmin(): bool {
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 }
 
+function isStaff(): bool {
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'staff';
+}
+
 function requireLogin(string $redirect = ''): void {
     if (!isLoggedIn()) {
         $target = $redirect ?: BASE_URL . '/login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']);
@@ -23,7 +27,15 @@ function requireLogin(string $redirect = ''): void {
 
 function requireAdmin(): void {
     requireLogin();
-    if (!isAdmin()) {
+    if ($_SESSION['user_role'] !== 'admin') {
+        header("Location: " . BASE_URL . "/home.php");
+        exit();
+    }
+}
+
+function requireManagement(): void {
+    requireLogin();
+    if ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'staff') {
         header("Location: " . BASE_URL . "/home.php");
         exit();
     }
@@ -47,8 +59,36 @@ function formatDate(string $date): string {
 
 // ── Shipping Calculation ─────────────────────────────────────
 
-function calculateShipping(float $subtotal): float {
-    return ($subtotal >= SHIPPING_THRESHOLD) ? 0.00 : SHIPPING_COST;
+function calculateShipping(float $subtotal, ?mysqli $conn = null): float {
+    if ($subtotal >= (defined('SHIPPING_THRESHOLD') ? SHIPPING_THRESHOLD : 100)) return 0.00;
+    
+    $shipping = 0.0;
+    if (!empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $id => $item) {
+            $cost = (float)($item['shipping_cost'] ?? 0);
+            
+            // If DB connection is provided, get the LATEST cost from the products table
+            if ($conn) {
+                $st = $conn->prepare("SELECT shipping_cost FROM products WHERE id = ?");
+                $st->bind_param("i", $id);
+                $st->execute();
+                $res = $st->get_result()->fetch_assoc();
+                if ($res) {
+                    $cost = (float)$res['shipping_cost'];
+                    // Update session so UI stays in sync
+                    $_SESSION['cart'][$id]['shipping_cost'] = $cost;
+                }
+            }
+            $shipping += $cost * (int)$item['quantity'];
+        }
+    }
+    
+    // Fallback to legacy global logic ONLY if no per-product costs were found
+    if ($shipping == 0 && $subtotal < (defined('SHIPPING_THRESHOLD') ? SHIPPING_THRESHOLD : 100)) {
+        return defined('SHIPPING_COST') ? SHIPPING_COST : 0.00;
+    }
+    
+    return $shipping;
 }
 
 function isFreeShipping(float $subtotal): bool {

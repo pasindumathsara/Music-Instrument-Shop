@@ -15,9 +15,9 @@ $adminPage = basename($_SERVER['PHP_SELF']);
 <!-- Top Navbar -->
 <nav class="navbar">
   <div class="nav-wrap">
-    <a href="<?php echo BASE_URL; ?>/admin/dashboard.php" class="nav-logo">
-       Melody<span>Admin</span>
-    </a>
+     <a href="<?php echo BASE_URL; ?>/admin/dashboard.php" class="nav-logo">
+        Melody<span><?php echo $_SESSION['user_role']==='admin'?'Admin':'Staff'; ?></span>
+     </a>
     <div class="nav-actions">
       <a href="<?php echo BASE_URL; ?>/home.php" class="btn-nav btn-nav-ghost" style="color:rgba(255,255,255,.7);">← Storefront</a>
       <div class="user-menu">
@@ -75,6 +75,7 @@ $adminPage = basename($_SERVER['PHP_SELF']);
        class="<?php echo $adminPage==='manage_orders.php'?'active':''; ?>">
       <span class="icon"></span> Orders
     </a>
+    <?php if ($_SESSION['user_role'] === 'admin'): ?>
     <a href="<?php echo BASE_URL; ?>/admin/manage_users.php"
        class="<?php echo $adminPage==='manage_users.php'?'active':''; ?>">
       <span class="icon"></span> Users
@@ -83,6 +84,7 @@ $adminPage = basename($_SERVER['PHP_SELF']);
        class="<?php echo $adminPage==='manage_categories.php'?'active':''; ?>">
       <span class="icon"></span> Categories
     </a>
+    <?php endif; ?>
     <a href="<?php echo BASE_URL; ?>/admin/reset_password.php"
        class="<?php echo $adminPage==='reset_password.php'?'active':''; ?>">
       <span class="icon"></span> Password Reset

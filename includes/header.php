@@ -171,16 +171,8 @@ setTimeout(dismissToast, 4500);
   const links = document.getElementById('navLinks');
   if (!ham || !links) return;
   ham.addEventListener('click', function() {
-    const open = links.style.display === 'flex';
-    links.style.display = open ? '' : 'flex';
-    links.style.flexDirection = 'column';
-    links.style.position = 'absolute';
-    links.style.top = '70px';
-    links.style.left = '0';
-    links.style.right = '0';
-    links.style.background = 'var(--primary)';
-    links.style.padding = '16px 24px';
-    links.style.zIndex = '999';
+    links.classList.toggle('show');
+    ham.textContent = links.classList.contains('show') ? '✕' : '☰';
   });
 })();
 </script>

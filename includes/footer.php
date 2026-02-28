@@ -41,27 +41,9 @@
   </div>
   <div class="footer-bottom">
     <span>© <?php echo date('Y'); ?> Melody Masters. All rights reserved.</span>
-    <span>Free shipping on orders over $100 </span>
+    <span>Free shipping on orders over £100 </span>
   </div>
 </footer>
 
-<script>
-// Mobile nav toggle
-const hamburger = document.getElementById('hamburger');
-const navLinks  = document.getElementById('navLinks');
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    navLinks.style.flexDirection = 'column';
-    navLinks.style.position = 'absolute';
-    navLinks.style.top = '70px';
-    navLinks.style.left = '0';
-    navLinks.style.right = '0';
-    navLinks.style.background = '#0f172a';
-    navLinks.style.padding = '12px 24px';
-    navLinks.style.zIndex = '999';
-  });
-}
-</script>
 </body>
 </html>

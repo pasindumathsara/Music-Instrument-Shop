@@ -76,7 +76,7 @@ require_once 'includes/header.php';
 ?>
 
 <div class="container section">
-  <h1 class="section-title" style="margin-bottom:32px;">👤 My <span>Account</span></h1>
+  <h1 class="section-title"> My <span>Account</span></h1>
 
   <?php if ($success): ?>
     <div class="alert alert-success"><?php echo sanitize($success); ?></div>
@@ -85,12 +85,12 @@ require_once 'includes/header.php';
     <div class="alert alert-danger"><?php echo sanitize($error); ?></div>
   <?php endif; ?>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;">
+  <div class="account-card-grid">
 
     <!-- Profile Update -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">✏️ Edit Profile</span>
+        <span class="card-title"> Edit Profile</span>
         <span class="badge <?php echo isAdmin() ? 'badge-admin' : 'badge-customer'; ?>">
           <?php echo ucfirst($user['role']); ?>
         </span>
@@ -117,7 +117,7 @@ require_once 'includes/header.php';
 
     <!-- Password Change -->
     <div class="card">
-      <div class="card-header"><span class="card-title">🔒 Change Password</span></div>
+      <div class="card-header"><span class="card-title"> Change Password</span></div>
       <div class="card-body">
         <form method="POST">
           <div class="form-group">
@@ -140,7 +140,7 @@ require_once 'includes/header.php';
   </div>
 
   <!-- Recent Orders -->
-  <div style="margin-top:32px;">
+  <div class="recent-orders-section section">
     <div class="section-header">
       <h2 class="section-title" style="font-size:1.3rem;">Recent <span>Orders</span></h2>
       <a href="<?php echo BASE_URL; ?>/orders.php" class="btn btn-outline btn-sm">View All Orders</a>

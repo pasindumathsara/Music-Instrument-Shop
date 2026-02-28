@@ -1,14 +1,15 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
-requireAdmin();
+requireManagement();
 
 $pageTitle = "Dashboard";
 
 // Stats
 $totalProducts = $conn->query("SELECT COUNT(*) FROM products")->fetch_row()[0];
 $totalOrders   = $conn->query("SELECT COUNT(*) FROM orders")->fetch_row()[0];
-$totalUsers    = $conn->query("SELECT COUNT(*) FROM users WHERE role='customer'")->fetch_row()[0];
+$totalCustomers = $conn->query("SELECT COUNT(*) FROM users WHERE role='customer'")->fetch_row()[0];
+$totalStaff     = $conn->query("SELECT COUNT(*) FROM users WHERE role='staff'")->fetch_row()[0];
 $totalRevenue  = $conn->query("SELECT SUM(total_amount) FROM orders WHERE status NOT IN ('cancelled','pending')")->fetch_row()[0] ?? 0;
 $pendingOrders = $conn->query("SELECT COUNT(*) FROM orders WHERE status='pending'")->fetch_row()[0];
 $lowStock      = $conn->query("SELECT COUNT(*) FROM products WHERE stock > 0 AND stock <= 5")->fetch_row()[0];
@@ -42,11 +43,13 @@ require_once 'includes/admin_header.php';
 
 <!-- Stats Cards -->
 <div class="stats-grid">
+  <?php if ($_SESSION['user_role'] === 'admin'): ?>
   <div class="stat-card">
     <div class="stat-icon"></div>
     <div class="stat-val"><?php echo formatPrice((float)$totalRevenue); ?></div>
     <div class="stat-lbl">Total Revenue</div>
   </div>
+  <?php endif; ?>
   <div class="stat-card green">
     <div class="stat-icon"></div>
     <div class="stat-val"><?php echo $totalOrders; ?></div>
@@ -65,15 +68,21 @@ require_once 'includes/admin_header.php';
       <?php endif; ?>
     </div>
   </div>
+  <?php if ($_SESSION['user_role'] === 'admin'): ?>
   <div class="stat-card yellow">
     <div class="stat-icon"></div>
-    <div class="stat-val"><?php echo $totalUsers; ?></div>
-    <div class="stat-lbl">Customers</div>
+    <div class="stat-val"><?php echo $totalCustomers + $totalStaff; ?></div>
+    <div class="stat-lbl">Community 
+      <small style="display:block;font-size:10px;margin-top:2px;">
+         <?php echo $totalCustomers; ?> Customers · <?php echo $totalStaff; ?> Staff
+      </small>
+    </div>
   </div>
+  <?php endif; ?>
 </div>
 
 <!-- Two column grid -->
-<div style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;">
+<div class="admin-dashboard-grid">
 
   <!-- Recent Orders -->
   <div class="card">
@@ -110,13 +119,11 @@ require_once 'includes/admin_header.php';
     <div class="card-header"><span class="card-title"> Top Sellers</span></div>
     <div class="card-body" style="padding:0;">
       <?php $rank=1; while ($tp = $topProducts->fetch_assoc()): ?>
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);">
-          <span style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;"><?php echo $rank++; ?></span>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:.83rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-              <?php echo sanitize($tp['name']); ?>
-            </div>
-            <div style="font-size:.75rem;color:var(--muted);"><?php echo $tp['sold']; ?> sold · <?php echo formatPrice($tp['revenue']); ?></div>
+        <div class="top-seller-item">
+          <span class="rank-badge"><?php echo $rank++; ?></span>
+          <div class="item-info">
+            <div class="item-name"><?php echo sanitize($tp['name']); ?></div>
+            <div class="item-meta"><?php echo $tp['sold']; ?> sold · <?php echo formatPrice($tp['revenue']); ?></div>
           </div>
         </div>
       <?php endwhile; ?>
@@ -125,19 +132,18 @@ require_once 'includes/admin_header.php';
 </div>
 
 <!-- Quick Links -->
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px;">
-  <a href="<?php echo BASE_URL; ?>/admin/manage_products.php?action=add"
-     class="btn btn-primary" style="padding:14px;border-radius:var(--radius);">
+<div class="quick-links-grid">
+  <a href="<?php echo BASE_URL; ?>/admin/manage_products.php?action=add" class="btn btn-primary">
      Add Product
   </a>
-  <a href="<?php echo BASE_URL; ?>/admin/manage_orders.php?status=pending"
-     class="btn btn-secondary" style="padding:14px;border-radius:var(--radius);">
+  <a href="<?php echo BASE_URL; ?>/admin/manage_orders.php?status=pending" class="btn btn-secondary">
      Pending Orders (<?php echo $pendingOrders; ?>)
   </a>
-  <a href="<?php echo BASE_URL; ?>/admin/manage_users.php"
-     class="btn btn-ghost" style="padding:14px;border-radius:var(--radius);">
+  <?php if ($_SESSION['user_role'] === 'admin'): ?>
+  <a href="<?php echo BASE_URL; ?>/admin/manage_users.php" class="btn btn-ghost">
      Manage Users
   </a>
+  <?php endif; ?>
 </div>
 
 <?php require_once 'includes/admin_footer.php'; ?>
