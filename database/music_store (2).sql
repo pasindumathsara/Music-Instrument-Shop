@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2026 at 07:09 AM
+-- Generation Time: Mar 01, 2026 at 06:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -75,7 +75,7 @@ CREATE TABLE `digital_products` (
 --
 
 INSERT INTO `digital_products` (`id`, `product_id`, `file_name`, `original_name`, `file_size`, `file_type`, `file_ext`, `download_count`, `version`, `created_at`, `updated_at`) VALUES
-(1, 21, 'digi_699e16f13b6da.pdf', 'digi_699e16f13b6da.pdf', 0, '', 'pdf', 2, '1.0', '2026-02-24 21:39:20', '2026-02-28 04:14:07');
+(1, 21, 'digi_69a471418f6ea.pdf', 'Melody_Masters_Lyrics.pdf', 2021, '0', 'pdf', 3, '1.0', '2026-02-24 21:39:20', '2026-03-01 17:05:47');
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,8 @@ CREATE TABLE `download_logs` (
 
 INSERT INTO `download_logs` (`id`, `user_id`, `product_id`, `file_name`, `ip_address`, `downloaded_at`) VALUES
 (1, 6, 21, 'digi_699e16f13b6da.pdf', '::1', '2026-02-28 04:06:42'),
-(2, 6, 21, 'digi_699e16f13b6da.pdf', '::1', '2026-02-28 04:14:07');
+(2, 6, 21, 'digi_699e16f13b6da.pdf', '::1', '2026-02-28 04:14:07'),
+(3, 5, 21, 'digi_69a471418f6ea.pdf', '::1', '2026-03-01 17:05:47');
 
 -- --------------------------------------------------------
 
@@ -131,7 +132,8 @@ INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `shipping_cost`, `status`
 (14, 6, 849.99, 0.00, 'paid', 'pasindu', '3738 Huntz Lane', 'AURORA', '47001', 'card', NULL, '2026-02-24 22:08:26'),
 (15, 6, 89.98, 9.99, 'paid', 'pasindu', '3738 Huntz Lane', 'AURORA', '47001', 'bank_transfer', NULL, '2026-02-24 22:09:36'),
 (16, 6, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-28 04:06:09'),
-(17, 6, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-28 04:12:37');
+(17, 6, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-28 04:12:37'),
+(18, 5, 120.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-03-01 17:05:29');
 
 -- --------------------------------------------------------
 
@@ -157,7 +159,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) 
 (14, 14, 5, 1, 849.99),
 (15, 15, 7, 1, 79.99),
 (16, 16, 21, 1, 20.00),
-(17, 17, 21, 1, 20.00);
+(17, 17, 21, 1, 20.00),
+(18, 18, 21, 1, 120.00);
 
 -- --------------------------------------------------------
 
@@ -188,7 +191,9 @@ INSERT INTO `order_status_history` (`id`, `order_id`, `status`, `note`, `created
 (15, 16, 'pending', 'Order placed via card', 'pasindu', '2026-02-28 04:06:09'),
 (16, 16, 'paid', 'Payment successful (Card ending in 7575)', 'pasindu', '2026-02-28 04:06:29'),
 (17, 17, 'pending', 'Order placed via card', 'pasindu', '2026-02-28 04:12:37'),
-(18, 17, 'paid', 'Payment successful (Card ending in 3222)', 'pasindu', '2026-02-28 04:13:51');
+(18, 17, 'paid', 'Payment successful (Card ending in 3222)', 'pasindu', '2026-02-28 04:13:51'),
+(19, 18, 'pending', 'Order placed via card', 'Admin', '2026-03-01 17:05:29'),
+(20, 18, 'paid', 'Payment successful (Card ending in 2232)', 'Admin', '2026-03-01 17:05:43');
 
 -- --------------------------------------------------------
 
@@ -215,7 +220,8 @@ INSERT INTO `payments` (`id`, `order_id`, `amount`, `card_last4`, `card_holder`,
 (8, 10, 20.00, '4444', 'Admin', 'Visa', 'success', '2026-02-25 02:56:25'),
 (10, 14, 849.99, '2222', 'pasindu', 'Visa', 'success', '2026-02-25 03:38:39'),
 (11, 16, 20.00, '7575', 'pasindu', 'Unknown', 'success', '2026-02-28 09:36:29'),
-(12, 17, 20.00, '3222', 'pasindu', 'Visa', 'success', '2026-02-28 09:43:51');
+(12, 17, 20.00, '3222', 'pasindu', 'Visa', 'success', '2026-02-28 09:43:51'),
+(13, 18, 120.00, '2232', 'Admin', 'Unknown', 'success', '2026-03-01 22:35:43');
 
 -- --------------------------------------------------------
 
@@ -253,7 +259,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `sh
 (13, 6, 'Stentor Student II Violin 4/4', 'Quality solid tonewood construction with superior playability and warm tone. Perfect for beginners advancing to intermediate level.', 199.99, 0.00, 20, 'product_699e017232f4e.jpg', '2026-02-24 14:40:12', 'physical', NULL),
 (14, 7, 'Focusrite Scarlett 2i2 Interface', 'Industry-leading USB audio interface with 2 combo inputs and best-in-class preamps. Get studio-quality recordings at home.', 159.99, 0.00, 18, 'product_699e019ee7437.jpg', '2026-02-24 14:40:12', 'physical', NULL),
 (15, 7, 'Sony MDR-7506 Studio Headphones', 'The industry-standard studio headphone used by professionals worldwide. 40mm neodymium drivers deliver clear, detailed sound reproduction.', 99.99, 0.00, 25, 'product_699e01d75f44e.webp', '2026-02-24 14:40:12', 'physical', NULL),
-(21, 12, 'music lyrics pdf', 'ggg', 20.00, 0.00, 6, 'product_699e16f13b091.jpg', '2026-02-24 21:24:01', 'digital', 'digi_699e16f13b6da.pdf');
+(21, 12, 'music lyrics pdf', 'music lyrics pdf', 120.00, 0.00, 6, 'product_699e16f13b091.jpg', '2026-02-24 21:24:01', 'digital', 'digi_69a471418f6ea.pdf');
 
 -- --------------------------------------------------------
 
@@ -392,37 +398,37 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `digital_products`
 --
 ALTER TABLE `digital_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `download_logs`
 --
 ALTER TABLE `download_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `products`
