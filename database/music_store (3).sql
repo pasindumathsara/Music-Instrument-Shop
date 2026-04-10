@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2026 at 06:12 PM
+-- Generation Time: Apr 10, 2026 at 07:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -92,15 +92,6 @@ CREATE TABLE `download_logs` (
   `downloaded_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `download_logs`
---
-
-INSERT INTO `download_logs` (`id`, `user_id`, `product_id`, `file_name`, `ip_address`, `downloaded_at`) VALUES
-(1, 6, 21, 'digi_699e16f13b6da.pdf', '::1', '2026-02-28 04:06:42'),
-(2, 6, 21, 'digi_699e16f13b6da.pdf', '::1', '2026-02-28 04:14:07'),
-(3, 5, 21, 'digi_69a471418f6ea.pdf', '::1', '2026-03-01 17:05:47');
-
 -- --------------------------------------------------------
 
 --
@@ -127,13 +118,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `shipping_cost`, `status`, `shipping_name`, `shipping_address`, `shipping_city`, `shipping_zip`, `payment_method`, `tracking_note`, `created_at`) VALUES
-(10, 5, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-24 21:25:45'),
-(13, 6, 849.99, 0.00, 'pending', 'pasindu', '3738 Huntz Lane', 'AURORA', '47001', 'cash_on_delivery', NULL, '2026-02-24 22:07:14'),
-(14, 6, 849.99, 0.00, 'paid', 'pasindu', '3738 Huntz Lane', 'AURORA', '47001', 'card', NULL, '2026-02-24 22:08:26'),
-(15, 6, 89.98, 9.99, 'paid', 'pasindu', '3738 Huntz Lane', 'AURORA', '47001', 'bank_transfer', NULL, '2026-02-24 22:09:36'),
-(16, 6, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-28 04:06:09'),
-(17, 6, 20.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-02-28 04:12:37'),
-(18, 5, 120.00, 0.00, 'paid', 'Digital Delivery', 'Digital Delivery', 'Digital', '000000', 'card', NULL, '2026-03-01 17:05:29');
+(19, 9, 199.99, 0.00, 'paid', 'pasindu mathsara', '3738 Huntz Lane', 'AURORA', '47001', 'card', NULL, '2026-04-10 04:35:46');
 
 -- --------------------------------------------------------
 
@@ -154,13 +139,7 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
-(10, 10, 21, 1, 20.00),
-(13, 13, 5, 1, 849.99),
-(14, 14, 5, 1, 849.99),
-(15, 15, 7, 1, 79.99),
-(16, 16, 21, 1, 20.00),
-(17, 17, 21, 1, 20.00),
-(18, 18, 21, 1, 120.00);
+(19, 19, 4, 1, 199.99);
 
 -- --------------------------------------------------------
 
@@ -182,18 +161,8 @@ CREATE TABLE `order_status_history` (
 --
 
 INSERT INTO `order_status_history` (`id`, `order_id`, `status`, `note`, `created_by`, `created_at`) VALUES
-(6, 10, 'paid', 'Initial status', 'system', '2026-02-24 21:53:57'),
-(10, 13, 'pending', 'Order placed via cash on delivery', 'pasindu', '2026-02-24 22:07:14'),
-(11, 14, 'pending', 'Order placed via card', 'pasindu', '2026-02-24 22:08:26'),
-(12, 14, 'paid', 'Payment successful (Card ending in 2222)', 'pasindu', '2026-02-24 22:08:39'),
-(13, 15, 'pending', 'Order placed via bank transfer', 'pasindu', '2026-02-24 22:09:36'),
-(14, 15, 'paid', 'Status updated by administrator', 'Admin', '2026-02-24 22:12:12'),
-(15, 16, 'pending', 'Order placed via card', 'pasindu', '2026-02-28 04:06:09'),
-(16, 16, 'paid', 'Payment successful (Card ending in 7575)', 'pasindu', '2026-02-28 04:06:29'),
-(17, 17, 'pending', 'Order placed via card', 'pasindu', '2026-02-28 04:12:37'),
-(18, 17, 'paid', 'Payment successful (Card ending in 3222)', 'pasindu', '2026-02-28 04:13:51'),
-(19, 18, 'pending', 'Order placed via card', 'Admin', '2026-03-01 17:05:29'),
-(20, 18, 'paid', 'Payment successful (Card ending in 2232)', 'Admin', '2026-03-01 17:05:43');
+(21, 19, 'pending', 'Order placed via card', 'pasindu mathsara', '2026-04-10 04:35:46'),
+(22, 19, 'paid', 'Payment successful (Card ending in 4444)', 'pasindu mathsara', '2026-04-10 04:36:10');
 
 -- --------------------------------------------------------
 
@@ -217,11 +186,7 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `order_id`, `amount`, `card_last4`, `card_holder`, `card_type`, `status`, `created_at`) VALUES
-(8, 10, 20.00, '4444', 'Admin', 'Visa', 'success', '2026-02-25 02:56:25'),
-(10, 14, 849.99, '2222', 'pasindu', 'Visa', 'success', '2026-02-25 03:38:39'),
-(11, 16, 20.00, '7575', 'pasindu', 'Unknown', 'success', '2026-02-28 09:36:29'),
-(12, 17, 20.00, '3222', 'pasindu', 'Visa', 'success', '2026-02-28 09:43:51'),
-(13, 18, 120.00, '2232', 'Admin', 'Unknown', 'success', '2026-03-01 22:35:43');
+(14, 19, 199.99, '4444', 'pasindu mathsara', 'Visa', 'success', '2026-04-10 10:06:10');
 
 -- --------------------------------------------------------
 
@@ -249,7 +214,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `shipping_cost`, `stock`, `image`, `created_at`, `product_type`, `digital_file`) VALUES
 (2, 2, 'Digital Piano', '88-key professional digital piano', 499.00, 0.00, 5, 'product_699e020b1835d.jpg', '2026-02-24 13:00:54', 'physical', NULL),
-(4, 1, 'Yamaha FG800 Acoustic Guitar', 'The FG800 features a solid Sitka spruce top with scalloped bracing and nato back and sides, delivering a full-bodied, resonant sound. Perfect for beginners and intermediate players alike.', 199.99, 0.00, 24, 'product_699e011e1bebb.jpg', '2026-02-24 14:40:12', 'physical', NULL),
+(4, 1, 'Yamaha FG800 Acoustic Guitar', 'The FG800 features a solid Sitka spruce top with scalloped bracing and nato back and sides, delivering a full-bodied, resonant sound. Perfect for beginners and intermediate players alike.', 199.99, 0.00, 23, 'product_699e011e1bebb.jpg', '2026-02-24 14:40:12', 'physical', NULL),
 (5, 1, 'Fender Stratocaster Electric Guitar', 'The iconic Stratocaster with solid alder body, maple neck, and 3 single-coil pickups. Versatile tone suitable for blues, rock, and everything in between.', 849.99, 0.00, 4, 'product_699e00ca5a4bc.jpg', '2026-02-24 14:40:12', 'physical', NULL),
 (7, 2, 'Casio CT-S300 Portable Keyboard', 'Lightweight 61-key keyboard with 400 AiX tones and 77 built-in rhythms. Great for students and on-the-go musicians.', 79.99, 30.00, 26, 'product_699dfec26da34.jpg', '2026-02-24 14:40:12', 'physical', NULL),
 (8, 2, 'Roland FP-30X Digital Piano', 'Premium 88-key weighted piano with PHA-4 Standard keyboard action and powerful speaker system. Studio-grade sound in a portable form.', 699.99, 0.00, 8, 'product_699dff4e17011.jpg', '2026-02-24 14:40:12', 'physical', NULL),
@@ -276,14 +241,6 @@ CREATE TABLE `reviews` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `rating`, `comment`, `created_at`) VALUES
-(2, 21, 6, 5, 'good product', '2026-02-28 04:07:18'),
-(3, 5, 6, 5, 'good', '2026-02-28 04:23:13');
-
 -- --------------------------------------------------------
 
 --
@@ -304,9 +261,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
-(5, 'Admin', 'admin@gmail.com', '$2y$10$IzjUVZWoLCrqTgF2T6gOfe9nV8K1TuqCXTayKpOE.Rb3.vJ/e/Dve', 'admin', '2026-02-24 15:35:38'),
-(6, 'pasindu', 'pasindumathsara@gmail.com', '$2y$10$WfpSLoJ6b3XIUVUCEheJx.aGwUZYhbjhda0BODebB/1mvxG9PZ5c2', 'customer', '2026-02-24 17:19:07'),
-(8, 'mathsara', 'mathsara@gmail.com', '$2y$10$kYFLK1shwaWx3hboczR3huQlK/rvDzGUaPAppvYSFSmAUjEvDMku.', 'staff', '2026-02-28 05:25:16');
+(9, 'pasindu mathsara', 'pasindumathsara@gmail.com', '$2y$10$dNFQ.x9tqWh9PngLrk0yY.LlM25De7pkRbh8gcHHbUA.wcAYAKAL2', 'customer', '2026-04-10 04:32:07'),
+(12, 'admin', 'admin@gmail.com', '$2y$10$h24.y1I72ALNbUKxMaiKDugSDctJ9J8oV3jR8AuhjyrEMAxA9HS2W', 'admin', '2026-04-10 05:03:26'),
+(13, 'mathsara', 'staff@gmail.com', '$2y$10$CMxMIkW622.OA/BC8WKe8uPUlkrmKQ./m6lO6BZ60ok4veHQtQl2G', 'staff', '2026-04-10 05:30:12');
 
 --
 -- Indexes for dumped tables
@@ -410,25 +367,25 @@ ALTER TABLE `download_logs`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -446,7 +403,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
